@@ -16,11 +16,13 @@ class LeatherbackPPORunnerCfg(RslRlOnPolicyRunnerCfg):
     max_iterations = 300    # 9600 timesteps / 32 rollouts = 300 iterations
     save_interval = 50
     experiment_name = "leatherback_direct"
-    empirical_normalization = False
+    # empirical_normalization = False
     
     policy = RslRlPpoActorCriticCfg(
         # Network architecture (matching SKRL: [32, 32])
         init_noise_std=1.0,  # Back to original value
+        actor_obs_normalization=False,
+        critic_obs_normalization=False,
         actor_hidden_dims=[32, 32],
         critic_hidden_dims=[32, 32],
         activation="elu",

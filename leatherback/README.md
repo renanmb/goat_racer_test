@@ -2,6 +2,10 @@
 
 <!-- Version 232 -->
 
+```bash
+isaaclab -p scripts/rsl_rl/train.py --task=Template-Leatherback-Direct-v0 --headless
+```
+
 ## Overview
 
 This project/repository serves as a template for building projects or extensions based on Isaac Lab.
