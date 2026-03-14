@@ -1,0 +1,54 @@
+# Extension configuration file.
+# Visit the "Extension configuration file (extension.toml)" section for more details:
+# https://docs.omniverse.nvidia.com/kit/docs/kit-manual/latest/guide/extensions_advanced.html
+#
+
+[core]
+reloadable = true
+order = 0
+
+[package]
+version = "0.0.1"
+title = "goatracer-one-interactive"
+description = "This is a Policy Based Robot Control Example extension for deploying reinforcement learning policies in Isaac Sim for ackermann wheeled robots such as the Leatherback."
+changelog = "docs/CHANGELOG.md"
+readme = "docs/README.md"
+preview_image = "data/preview.png"
+icon = "data/icon.png"
+authors = ["Renan Monteiro Barbosa"]
+repository="https://github.com/boredengineering/goatracer.one.interactive"
+keywords="inference, isaaclab, ONNX, Pytorch, JIT, Leatherback"
+
+[dependencies]
+"omni.kit.uiapp" = {}
+"isaacsim.core.api" = {}
+"isaacsim.core.prims" = {}
+"isaacsim.core.nodes" = {}
+"isaacsim.core.utils" = {}
+"isaacsim.cortex.behaviors" = {}
+"isaacsim.cortex.framework" = {}
+"isaacsim.examples.browser" = {}
+"isaacsim.gui.components" = {}
+"isaacsim.robot.manipulators" = {}
+"isaacsim.robot.manipulators.examples" = {}
+"isaacsim.robot_motion.motion_generation" = {}
+"isaacsim.robot.policy.examples" = {}
+"isaacsim.examples.extension" = {}
+"isaacsim.sensors.camera" = {}
+"isaacsim.sensors.physics" = {}
+"omni.graph.action" = {}
+"omni.graph.nodes" = {}
+"omni.graph.core" = {}
+"omni.isaac.dynamic_control" = {}
+"isaacsim.storage.native" = {}
+"isaacsim.robot.wheeled_robots" = {}
+"omni.physx" = {}
+"omni.kit.pipapi" = {}
+
+# define the Python module that the extension provides
+[[python.module]]
+name = "goatracer.one.interactive"
+
+[settings]
+exts."goatracer.one.interactive".timeout = 5
+
