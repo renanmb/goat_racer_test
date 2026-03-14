@@ -113,6 +113,32 @@ nohup ./installer.sh > /home/ubuntu/installer_output.log 2>&1 &
 echo "=== Setup Launched Successfully ==="
 ```
 
+```bash
+#!/bin/bash
+set -e
+
+# 1. Define where the repo will live
+WORKSPACE_DIR="/home/ubuntu" 
+REPO_NAME="goat_racer_test"
+REPO_PATH="$WORKSPACE_DIR/$REPO_NAME"
+
+# 2. Navigate directly into the scripts directory
+echo "Navigating to scripts directory..."
+cd "$REPO_PATH/brev-launchable-scripts"
+
+# 2. Make the installer executable
+chmod +x installer.sh setup-novnc.sh setup-conda.sh setup-isaacsim.sh setup-isaaclab.sh setup-gr00t.sh setup-leisaac.sh
+
+# 3. Run the installer
+echo "Executing installer.sh..."
+
+# Running it with nohup so it doesn't block the rest of the Brev setup process, 
+# and routing all output to a log file for easy debugging.
+nohup ./installer.sh > /home/ubuntu/installer_output.log 2>&1 &
+
+echo "=== Setup Launched Successfully ==="
+```
+
 **Networking**
 
 Configure the Follwing ports on the Launchable:
