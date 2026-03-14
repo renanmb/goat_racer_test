@@ -179,7 +179,7 @@ while true; do
         stage_conda)    run_conda ;;
         stage_isaacsim) run_isaacsim ;;
         stage_isaaclab) run_isaaclab ;;
-        stage_leatherback) run_isaaclab ;;
+        stage_leatherback) run_leatherback ;;
         stage_gr00t)    run_gr00t ;;
         stage_leisaac)  run_leisaac ;;
         completed)
