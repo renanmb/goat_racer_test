@@ -85,7 +85,7 @@ run_isaaclab() {
             # --- Fix: Use a login shell and set the working directory ---
             if sudo -i -u ubuntu bash -c "cd ~/IsaacLab && /opt/conda/bin/conda run -n isaaclab python -c 'import torch'"; then
                 echo "✅ Isaac Lab successfully verified!"
-                update_status "completed"
+                update_status "stage_leatherback"
                 return 0
             fi
         fi
@@ -103,6 +103,16 @@ run_isaaclab() {
         fi
         ATTEMPT=$((ATTEMPT+1))
     done
+}
+
+run_leatherback() {
+    echo ">>> Starting Step 5: Leatherback Setup"
+    if sudo bash "$BASE_DIR/setup-leatherback.sh"; then
+        update_status "completed"
+    else
+        echo "❌ Step 5 Failed. Halting."
+        exit 1
+    fi
 }
 
 run_gr00t() {
@@ -169,6 +179,7 @@ while true; do
         stage_conda)    run_conda ;;
         stage_isaacsim) run_isaacsim ;;
         stage_isaaclab) run_isaaclab ;;
+        stage_leatherback) run_isaaclab ;;
         stage_gr00t)    run_gr00t ;;
         stage_leisaac)  run_leisaac ;;
         completed)

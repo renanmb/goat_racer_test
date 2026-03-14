@@ -1,60 +1,51 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-############################
-# CONFIG
-############################
-ANSIBLE_USER="ubuntu"
-HOME_DIR="/home/${ANSIBLE_USER}"
+# setup-leatherback.sh (version 01)
+# Installs the Leatherback project into the 'isaaclab' conda environment
+
+# -----------------------------------------------------------------------------
+# Configuration
+# -----------------------------------------------------------------------------
+TARGET_USER="ubuntu"
 CONDA_ENV_NAME="isaaclab"
-PROJECT_VERSION="dataset-handler"
+# Find the repository root (goat_racer_test) based on this script's location
+REPO_ROOT="$(readlink -f "$(dirname "$0")")"
+LEATHERBACK_DIR="$REPO_ROOT/leatherback"
 
-log() { echo -e "\n>>> $*\n"; }
+log() { echo -e "\n>>> [Leatherback Setup] $*"; }
+fail() { echo -e "\n❌ [ERROR] $*" >&2; exit 1; }
 
-############################
-# PRE-REQUISITES (APT)
-############################
-log "Installing system dependencies"
-apt-get update
-DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    git \
-    curl \
-    cmake \
-    build-essential
-
-############################
-# LEATHERBACK SETUP 
-############################
-log "Cloning LeIsaac (${LEISAAC_VERSION})"
-if [ ! -d "$HOME_DIR/leisaac" ]; then
-    sudo -u "$ANSIBLE_USER" git clone --recursive https://github.com/renanmb/leisaac.git "$HOME_DIR/leisaac"
-    cd "$HOME_DIR/leisaac"
-    sudo -u "$ANSIBLE_USER" git checkout "$LEISAAC_VERSION"
+# -----------------------------------------------------------------------------
+# Pre-checks
+# -----------------------------------------------------------------------------
+if [[ "$EUID" -ne 0 ]]; then
+  fail "This script must be run as root (sudo)"
 fi
 
-############################
-# INSTALLATION
-############################
-log "Installing LeIsaac and GR00T dependencies"
+if [[ ! -d "$LEATHERBACK_DIR" ]]; then
+  fail "Leatherback directory not found at: $LEATHERBACK_DIR"
+fi
 
-# Using 'conda run' ensures we are in the correct env context without needing to 'source' conda.sh
-sudo -u "$ANSIBLE_USER" -i conda run -n "$CONDA_ENV_NAME" --cwd "$HOME_DIR/leisaac" \
-    pip install -e source/leisaac
+# -----------------------------------------------------------------------------
+# Installation
+# -----------------------------------------------------------------------------
+log "Installing Leatherback into environment: $CONDA_ENV_NAME"
 
-log "Installing optional GR00T dependencies"
-sudo -u "$ANSIBLE_USER" -i conda run -n "$CONDA_ENV_NAME" --cwd "$HOME_DIR/leisaac" \
-    pip install -e "source/leisaac[gr00t]"
+# We use -i (login shell) and -u (target user) to ensure PATHs are loaded correctly.
+# 'conda run' executes the command within the specific environment context.
+sudo -H -u "$TARGET_USER" -i \
+    conda run -n "$CONDA_ENV_NAME" \
+    --cwd "$LEATHERBACK_DIR" \
+    python -m pip install -e source/leatherback
 
+# -----------------------------------------------------------------------------
+# Verification
+# -----------------------------------------------------------------------------
+log "Verifying installation..."
 
-# 5. Build extensions
-echo "▶ Building extensions (This may take 10+ minutes)..."
-# Force the use of the conda-specific python for the install
-conda run -n "$CONDA_ENV_NAME" ./isaaclab.sh -i
-
-############################
-# VERIFICATION
-############################
-log "Verifying installation"
-sudo -u "$ANSIBLE_USER" -i conda run -n "$CONDA_ENV_NAME" isaaclab -i
-
-log "LeIsaac setup completed successfully."
+if sudo -H -u "$TARGET_USER" -i conda run -n "$CONDA_ENV_NAME" python -c "import leatherback; print('Leatherback successfully imported!')" ; then
+    log "✅ Leatherback setup completed successfully."
+else
+    fail "Verification failed. Leatherback module not found in '$CONDA_ENV_NAME'."
+fi
