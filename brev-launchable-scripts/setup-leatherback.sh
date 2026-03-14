@@ -9,8 +9,9 @@ set -euo pipefail
 # -----------------------------------------------------------------------------
 TARGET_USER="ubuntu"
 CONDA_ENV_NAME="isaaclab"
-# Find the repository root (goat_racer_test) based on this script's location
-REPO_ROOT="$(readlink -f "$(dirname "$0")")"
+
+# Go one directory up from the script's location to reach 'goat_racer_test'
+REPO_ROOT="$(readlink -f "$(dirname "$0")/..")"
 LEATHERBACK_DIR="$REPO_ROOT/leatherback"
 
 log() { echo -e "\n>>> [Leatherback Setup] $*"; }
