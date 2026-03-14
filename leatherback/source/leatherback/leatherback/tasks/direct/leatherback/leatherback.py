@@ -26,7 +26,8 @@ WORKSPACE_ROOT = repo_root
 
 # 4. Construct the precise path to the asset from the repo root
 USD_PATH = os.path.join(
-    WORKSPACE_ROOT, 
+    WORKSPACE_ROOT,
+    "leatherback", 
     "source", 
     "leatherback", 
     "leatherback", 
