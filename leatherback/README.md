@@ -5,6 +5,20 @@
 ```bash
 isaaclab -p scripts/rsl_rl/train.py --task=Template-Leatherback-Direct-v0 --headless
 ```
+Must have git lfs
+
+For Debian/Ubuntu-based systems:
+
+```bash
+curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+sudo apt install git-lfs
+```
+
+Initialize Git LFS
+
+```bash
+git lfs install
+```
 
 ## Overview
 
