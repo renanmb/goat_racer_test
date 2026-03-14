@@ -139,7 +139,16 @@ nohup ./installer.sh > /home/ubuntu/installer_output.log 2>&1 &
 echo "=== Setup Launched Successfully ==="
 ```
 
-**Networking**
+## Installing IsaacLab External Project
+
+- Using a python interpreter that has Isaac Lab installed, install the library in editable mode using:
+
+```bash
+# use 'PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
+python -m pip install -e source/leatherback
+```
+
+## **Networking**
 
 Configure the Follwing ports on the Launchable:
 
